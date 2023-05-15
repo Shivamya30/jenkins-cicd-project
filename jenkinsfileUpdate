@@ -1,0 +1,15 @@
+pipeline {
+  agent any
+  stages {
+    stage ('Update GIT') {
+      steps {
+        sh "cat deployment.yaml"
+        sh "sed -i 's+public.ecr.aws/e4j0o0u9/ecr-demoing.*+public.ecr.aws/e4j0o0u9/ecr-demoing:${env.BUILD_NUMBER}+g' deployment.yaml"
+        sh "cat deployment.yaml"
+        sh "git add ."
+        sh "git commit -m 'Done by Jenkins Job changemanifest: ${env.BUILD_NUMBER}'"
+        sh "git push"
+      }
+    }
+  }
+}
