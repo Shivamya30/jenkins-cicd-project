@@ -17,7 +17,7 @@ pipeline {
       }
     }
     stage ('Update GIT') {
-      script {
+      steps {
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
           withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
             sh "cat deployment.yaml"
