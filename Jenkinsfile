@@ -19,7 +19,7 @@ pipeline {
     stage ('Update GIT') {
       steps {
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-          withCredentials([usernamePassword(credentialsId: 'github-jenkinsfile', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+          withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
             sh "git config user.email 30shiwamyasinha@gmail.com"
             sh "git config user.name Shivamya30"
             sh "cat deployment.yaml"
