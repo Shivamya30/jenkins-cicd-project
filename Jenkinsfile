@@ -20,6 +20,8 @@ pipeline {
       steps {
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
           withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+            sh "git config user.email 30shiwamyasinha@gmail.com"
+            sh "git config user.name Shivamya30"
             sh "cat deployment.yaml"
             sh "sed -i 's+public.ecr.aws/y8a4e4w2/ecr-demoing.*+public.ecr.aws/y8a4e4w2/ecr-demoing:${env.BUILD_NUMBER}+g' deployment.yaml"
             sh "cat deployment.yaml"
