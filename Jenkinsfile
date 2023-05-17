@@ -17,14 +17,19 @@ pipeline {
       }
     }
     stage ('Update GIT') {
-      steps {
-        sh "cat deployment.yaml"
-        sh "sed -i 's+public.ecr.aws/y8a4e4w2/ecr-demoing.*+public.ecr.aws/y8a4e4w2/ecr-demoing:${env.BUILD_NUMBER}+g' deployment.yaml"
-        sh "cat deployment.yaml"
-        sh "git branch -a"
-        sh "git add ."
-        sh "git commit -m 'Done by Jenkins Job changemanifest: ${env.BUILD_NUMBER}'"
-        sh "git push remotes/origin/master HEAD:remotes/origin/master"
+      script {
+        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+          withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+            sh "cat deployment.yaml"
+            sh "sed -i 's+public.ecr.aws/y8a4e4w2/ecr-demoing.*+public.ecr.aws/y8a4e4w2/ecr-demoing:${env.BUILD_NUMBER}+g' deployment.yaml"
+            sh "cat deployment.yaml"
+            sh "git branch -a"
+            sh "git add ."
+            sh "git commit -m 'Done by Jenkins Job changemanifest: ${env.BUILD_NUMBER}'"
+            sh "git push remotes/origin/master HEAD:remotes/origin/master"
+            sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/jenkins-cicd-project.git HEAD:master"
+          }
+        }
       }
     }
   }
