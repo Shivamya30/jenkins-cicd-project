@@ -16,5 +16,15 @@ pipeline {
         }
       }
     }
+    stage ('Update GIT') {
+      steps {
+        sh "cat deployment.yaml"
+        sh "sed -i 's+public.ecr.aws/y8a4e4w2/ecr-demoing.*+public.ecr.aws/y8a4e4w2/ecr-demoing:${env.BUILD_NUMBER}+g' deployment.yaml"
+        sh "cat deployment.yaml"
+        sh "git add ."
+        sh "git commit -m 'Done by Jenkins Job changemanifest: ${env.BUILD_NUMBER}'"
+        sh "git push -f master"
+      }
+    }
   }
 }
