@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: myapp-container
-        image: public.ecr.aws/e4j0o0u9/ecr-demoing:8 # Change this to the image name and version for your app
+        image: public.ecr.aws/y8a4e4w2/ecr-demoing:14 # Change this to the image name and version for your app
         ports:
         - containerPort: 5000
 ---
